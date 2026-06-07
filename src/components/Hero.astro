@@ -1,0 +1,40 @@
+---
+const { business } = await import('../data/business.ts');
+
+interface Props {
+  eyebrow?: string;
+  heading: string;
+  subhead?: string;
+  showCta?: boolean;
+  showHours?: boolean;
+  height?: string;
+}
+
+const { eyebrow, heading, subhead, showCta = true, showHours = false, height = 'min-h-[85vh]' } = Astro.props;
+---
+
+<section class={`relative ${height} flex items-center`}>
+  <img
+    src={business.photos.cover}
+    alt={business.name}
+    class="absolute inset-0 w-full h-full object-cover"
+    loading="eager"
+    fetchpriority="high"
+  />
+  <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/10" />
+  <div class="container-main relative z-10 text-white py-20">
+    {eyebrow && <p class="text-sm uppercase tracking-[0.2em] mb-4 text-white/80">Est. {business.established} · {business.address.city}, {business.address.state}</p>}
+    <h1 class="font-['Instrument_Serif',serif] italic text-[clamp(2.5rem,6vw,5rem)] leading-[1.05] mb-6 max-w-3xl">{heading}</h1>
+    {subhead && <p class="text-lg text-white/80 max-w-xl mb-8 leading-relaxed">{subhead}</p>}
+    {showCta && (
+      <div class="flex flex-col sm:flex-row items-start gap-4">
+        <a href={`tel:${business.phone}`} class="btn-primary text-lg">
+          Call {business.phone}
+        </a>
+        {showHours && (
+          <span class="text-sm text-white/60 self-center">Open today · {business.hours[new Date().getDay() === 0 ? 6 : new Date().getDay() - 1]?.open || 'Call for hours'}</span>
+        )}
+      </div>
+    )}
+  </div>
+</section>

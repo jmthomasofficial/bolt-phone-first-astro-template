@@ -1,0 +1,31 @@
+---
+const { business } = await import('../data/business.ts');
+const items = [
+  `${business.stats[0]?.number || '27+'} ${business.stats[0]?.label || 'Years Experience'}`,
+  `${business.stats[1]?.number || '4.9'} ${business.stats[1]?.label || 'Star Rating'}`,
+  `${business.stats[2]?.number || '500+'} ${business.stats[2]?.label || 'Jobs Completed'}`,
+  `${business.stats[0]?.number || '27+'} ${business.stats[0]?.label || 'Years Experience'}`,
+  `${business.stats[1]?.number || '4.9'} ${business.stats[1]?.label || 'Star Rating'}`,
+];
+---
+
+<div class="overflow-hidden border-y border-[var(--border)] py-4 bg-[var(--bg-elevated)]">
+  <div class="flex whitespace-nowrap animate-marquee">
+    {items.map((item) => (
+      <span class="mx-8 text-sm font-medium text-[var(--ink-2)] uppercase tracking-widest flex items-center gap-3">
+        <span class="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
+        {item}
+      </span>
+    ))}
+  </div>
+</div>
+
+<style>
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .animate-marquee {
+    animation: marquee 20s linear infinite;
+  }
+</style>

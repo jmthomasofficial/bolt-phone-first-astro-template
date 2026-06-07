@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg: #FAF7F2;
+    --bg-elevated: #FFFFFF;
+    --ink: #1A1814;
+    --ink-2: #4A4640;
+    --ink-3: #8A857C;
+    --border: #E8E2D6;
+    --accent: #B8541E;
+    --accent-2: #2D5F3F;
+    --accent-ink: #FFFFFF;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-[var(--bg)] text-[var(--ink)] antialiased;
+    font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Inter', system-ui, sans-serif;
+  }
+
+  h1, h2, h3 {
+    font-family: 'Instrument Serif', 'Source Serif Pro', Georgia, serif;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-8 py-4 text-base font-bold transition-all duration-200;
+    background: var(--accent);
+    color: var(--accent-ink);
+    min-height: 48px;
+    min-width: 48px;
+  }
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  }
+  .btn-primary:active {
+    transform: translateY(0);
+  }
+
+  .container-main {
+    @apply mx-auto w-full max-w-[1200px] px-[clamp(20px,4vw,40px)];
+  }
+
+  .section-padding {
+    padding: clamp(80px, 12vh, 160px) 0;
+  }
+
+  .scroll-reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .scroll-reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

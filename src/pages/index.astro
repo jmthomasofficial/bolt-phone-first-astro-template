@@ -1,0 +1,78 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TopNav from '../components/TopNav.astro';
+import Hero from '../components/Hero.astro';
+import Marquee from '../components/Marquee.astro';
+import Stats from '../components/Stats.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import PhotoGrid from '../components/PhotoGrid.astro';
+import ReviewCard from '../components/ReviewCard.astro';
+import Footer from '../components/Footer.astro';
+import MobileCallBar from '../components/MobileCallBar.astro';
+import { business } from '../data/business.ts';
+---
+
+<BaseLayout title="Home" page="home">
+  <TopNav slot="topnav" />
+
+  <Hero
+    heading={`${business.category} that ${business.address.city} trusts.`}
+    subhead={business.description}
+    showHours={true}
+  />
+
+  <Marquee />
+
+  <Stats />
+
+  <!-- Services Preview -->
+  <section class="section-padding">
+    <div class="container-main">
+      <h2 class="font-['Instrument_Serif',serif] italic text-[clamp(1.75rem,3.5vw,2.75rem)] text-[var(--ink)] mb-2 scroll-reveal">What we do.</h2>
+      <p class="text-[var(--ink-2)] mb-12 max-w-lg scroll-reveal">The services {business.address.city} counts on.</p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {business.services.slice(0, 3).map((service) => (
+          <ServiceCard name={service.name} description={service.description} />
+        ))}
+      </div>
+      <div class="mt-8 text-center scroll-reveal">
+        <a href="/services" class="text-[var(--accent)] font-medium hover:underline">All services →</a>
+      </div>
+    </div>
+  </section>
+
+  <PhotoGrid />
+
+  <!-- Testimonial -->
+  <section class="section-padding bg-[var(--bg-elevated)]">
+    <div class="container-main">
+      {business.reviews[0] && (
+        <ReviewCard
+          name={business.reviews[0].name}
+          city={business.reviews[0].city}
+          rating={business.reviews[0].rating}
+          text={business.reviews[0].text}
+          featured={true}
+        />
+      )}
+      <div class="mt-8 text-center scroll-reveal">
+        <a href="/reviews" class="text-[var(--accent)] font-medium hover:underline">All reviews →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="py-20 bg-[var(--accent)]">
+    <div class="container-main text-center">
+      <h2 class="font-['Instrument_Serif',serif] italic text-[clamp(1.75rem,3.5vw,2.75rem)] text-white mb-6 scroll-reveal">
+        Ready to get started?
+      </h2>
+      <a href={`tel:${business.phone}`} class="btn-primary bg-white text-[var(--accent)] text-lg scroll-reveal">
+        Call {business.phone}
+      </a>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+  <MobileCallBar slot="mobile-call-bar" />
+</BaseLayout>

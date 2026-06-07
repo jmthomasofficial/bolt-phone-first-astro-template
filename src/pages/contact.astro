@@ -1,0 +1,67 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TopNav from '../components/TopNav.astro';
+import Hero from '../components/Hero.astro';
+import Footer from '../components/Footer.astro';
+import MobileCallBar from '../components/MobileCallBar.astro';
+import { business } from '../data/business.ts';
+
+const today = new Date().toLocaleDateString('en-US', { weekday: 'long' });
+---
+
+<BaseLayout title="Contact" page="contact">
+  <TopNav slot="topnav" />
+
+  <Hero
+    heading="Contact"
+    subhead={`Call ${business.name} — we pick up.`}
+    showCta={false}
+    height="min-h-[40vh]"
+  />
+
+  <section class="section-padding">
+    <div class="container-main">
+      <!-- Big click-to-call -->
+      <div class="text-center mb-16 scroll-reveal">
+        <p class="text-[var(--ink-3)] uppercase tracking-widest text-sm mb-4">Call us now</p>
+        <a href={`tel:${business.phone}`} class="font-['Instrument_Serif',serif] text-[clamp(2rem,5vw,4rem)] text-[var(--accent)] hover:opacity-80 transition-opacity">
+          {business.phone}
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <!-- Hours -->
+        <div class="bg-[var(--bg-elevated)] rounded-2xl border border-[var(--border)] p-8 scroll-reveal">
+          <h3 class="font-['Instrument_Serif',serif] text-2xl text-[var(--ink)] mb-6">Hours</h3>
+          <div class="space-y-3">
+            {business.hours.map((h) => (
+              <div class:list={["flex justify-between text-sm py-2 border-b border-[var(--border)]", h.day === today && "font-bold text-[var(--accent)]"]}>
+                <span>{h.day} {h.day === today && '(Today)'}</span>
+                <span>{h.open === 'Closed' ? 'Closed' : `${h.open} – ${h.close}`}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Address + Map -->
+        <div class="space-y-6 scroll-reveal">
+          <div class="bg-[var(--bg-elevated)] rounded-2xl border border-[var(--border)] p-8">
+            <h3 class="font-['Instrument_Serif',serif] text-2xl text-[var(--ink)] mb-4">Address</h3>
+            <p class="text-[var(--ink-2)] mb-4">{business.address.street}<br />{business.address.city}, {business.address.state} {business.address.zip}</p>
+            <a href={business.address.googleMapsUrl} target="_blank" rel="noopener noreferrer" class="text-[var(--accent)] font-medium text-sm hover:underline">
+              Get directions →
+            </a>
+          </div>
+          {business.mapsEmbedUrl && business.mapsEmbedUrl !== '{{MAPS_EMBED_URL}}' && (
+            <div class="rounded-2xl overflow-hidden border border-[var(--border)] scroll-reveal">
+              <iframe src={business.mapsEmbedUrl} width="100%" height="300" style="border:0;" allowfullscreen loading="lazy" />
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+  <MobileCallBar slot="mobile-call-bar" />
+</BaseLayout>

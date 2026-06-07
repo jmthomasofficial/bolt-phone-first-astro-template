@@ -1,0 +1,5 @@
+src/styles/global.css
+src/layouts/BaseLayout.astro
+src/components/TopNav.astro
+src/components/MobileCallBar.astro
+src/components/Footer.astro

@@ -1,0 +1,106 @@
+---
+export interface Props {
+  title: string;
+  description?: string;
+  page: string;
+}
+
+const { title, description, page } = Astro.props;
+const { business } = await import('../data/business.ts');
+
+const localBusinessJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': business.category || 'LocalBusiness',
+  name: business.name,
+  image: business.photos.cover,
+  telephone: business.phone,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: business.address.street,
+    addressLocality: business.address.city,
+    addressRegion: business.address.state,
+    postalCode: business.address.zip,
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: '{{GEO_LAT}}',
+    longitude: '{{GEO_LNG}}',
+  },
+  openingHoursSpecification: business.hours.map((h) => ({
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: h.day,
+    opens: h.open === 'Closed' ? undefined : h.open,
+    closes: h.open === 'Closed' ? undefined : h.close,
+  })).filter((h) => h.opens),
+  priceRange: '{{PRICE_RANGE}}',
+  areaServed: { '@type': 'City', name: business.address.city },
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content={description || `${business.name} — ${business.address.city}. Call ${business.phone}.`} />
+    <title>{title} | {business.name}</title>
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(localBusinessJsonLd)} />
+
+    <script defer data-domain="{{PLAUSIBLE_DOMAIN}}" src="https://plausible.io/js/script.js"></script>
+  </head>
+  <body>
+    <slot name="topnav" />
+    <main>
+      <slot />
+    </main>
+    <slot name="footer" />
+    <slot name="mobile-call-bar" />
+
+    <script>
+      // Scroll reveal
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+            }
+          });
+        },
+        { rootMargin: '-10%' }
+      );
+      document.querySelectorAll('.scroll-reveal').forEach((el) => observer.observe(el));
+
+      // Sticky nav: hide on scroll-down, reveal on scroll-up
+      let lastScroll = 0;
+      const nav = document.querySelector('[data-sticky-nav]');
+      if (nav) {
+        window.addEventListener('scroll', () => {
+          const current = window.scrollY;
+          if (current > lastScroll && current > 100) {
+            nav.style.transform = 'translateY(-100%)';
+          } else {
+            nav.style.transform = 'translateY(0)';
+          }
+          nav.style.transition = 'transform 220ms ease';
+          lastScroll = current;
+        }, { passive: true });
+      }
+
+      // Tel: click tracking
+      document.querySelectorAll('a[href^="tel:"]').forEach((link) => {
+        link.addEventListener('click', () => {
+          const number = link.getAttribute('href')?.replace('tel:', '') || '';
+          if (typeof plausible === 'function') {
+            plausible('tel_click', { props: { destination: number } });
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

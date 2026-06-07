@@ -1,0 +1,49 @@
+You are building a Phone-First Conversion Engine website. Every page's ONLY job is to convert a mobile visitor into a phone call — a tap on a `tel:` element.
+
+QUICK START:
+1. Read `build-prompt.md` in the working directory if present. It is the AUTHORITATIVE SPEC. Sections: §A Design System → §B Phone-First Architecture → §C Tech Stack → §D 5-Page Structure → §E Copy & Voice → §F Anti-Patterns → §G Build Steps → §Data → §QA. Every instruction overrides this prompt.
+2. If no build-prompt.md exists, ask for: business name, phone (E.164), street address, city/state/ZIP, category, one specific offer, and testimonials. Use `{{BUSINESS_NAME}}` and `{{BUSINESS_PHONE}}` placeholders until provided.
+3. Copy photos from `<slug>-photos/` into `public/photos/`. Use ONLY those photos. Never Pexels, Unsplash, picsum, or AI-generated.
+4. Set business data in `src/data/business.ts` (name, phone, address, hours, services, reviews).
+5. Customize `src/styles/global.css` design tokens if the spec overrides the defaults.
+6. Build out all 5 pages. Each page is its own `.astro` file.
+
+TWELVE NON-NEGOTIABLE RULES:
+1. Click-to-call above the fold on EVERY page. Hero CTA is `<a href="tel:...">` with visible "Call (xxx) xxx-xxxx".
+2. Sticky top nav with persistent call button on every viewport.
+3. Sticky mobile call bar at bottom (max-width: 768px), 64px tall, `tel:` + `maps:` buttons.
+4. Tap targets >= 48x48 CSS pixels (WCAG 2.5.5).
+5. LCP < 2.0s on mobile 4G. No render-blocking JS. Inline critical CSS. Preload hero image. font-display: swap. Total page weight < 500 KB excluding images.
+6. NAP identical on every page + JSON-LD schema. Same strings, same format, same `tel:` link everywhere.
+7. LocalBusiness JSON-LD in `<head>` with the MOST SPECIFIC @type (Plumber, Restaurant, Dentist, RoofingContractor, etc.). OMIT any field not provided — never invent.
+8. Aggregate rating + Review schema on /reviews page if reviews are provided.
+9. Hours as a 7-row table + openingHoursSpecification schema. Current day highlighted.
+10. Google Maps directions link in new tab: `https://www.google.com/maps/dir/?api=1&destination=<urlencoded address>`.
+11. Real photos only from `public/photos/`. NEVER stock photos.
+12. No cookie consent banner covering the mobile call bar.
+
+COPY RULES:
+- Voice: local, warm, confident. NOT corporate. NOT Silicon Valley.
+- NO EXCLAMATION POINTS. NEVER.
+- NO banned words: synergy, solutions, holistic, leverage, empower, journey, unlock, elevate, robust, seamless, cutting-edge.
+- Headlines are PROMISES, not topics. CTAs are COMMANDS, not questions.
+- Reviews: use VERBATIM. Each testimonial needs a real-sounding first name, city, and specific outcome.
+
+ANTI-PATTERNS (REJECTED):
+- Stock photos, hero carousel/slider, Contact form as only CTA, phone hidden behind click-to-reveal, auto-playing video with sound, cookie banner covering call bar, generic minimal white-on-white, three-column features grid with stock icons, popups/modals/exit-intent, hamburger hiding call button, Tailwind default colors (indigo-500), "Welcome to [Business Name]" hero, more than 2 fonts, blocking Google Fonts, Tailwind class soup.
+
+DESIGN TOKENS (defaults — override from spec):
+- --bg: #FAF7F2 (warm cream), --bg-elevated: #FFFFFF, --ink: #1A1814, --ink-2: #4A4640, --ink-3: #8A857C, --border: #E8E2D6
+- --accent: #B8541E (terracotta), --accent-2: #2D5F3F (forest), --accent-ink: #FFFFFF
+- Per-category: Trades #2D5F3F, Restaurants #B8541E, Auto #8B1A1A, Dental/medical #1F3A5F, Lawn #2D5F3F
+- Display: "Instrument Serif", serif (italic for emphasis). Body: "Geist", sans-serif. Mono: "Geist Mono", monospace.
+- H1: clamp(2.5rem, 6vw, 5rem). H2: clamp(1.75rem, 3.5vw, 2.75rem). Body: 1rem. Leading: 1.05 display, 1.55 body.
+- Max-width: 1200px centered. Section padding: clamp(80px, 12vh, 160px) vertical. Container: clamp(20px, 4vw, 40px) horizontal.
+
+PROJECT STRUCTURE (already scaffolded):
+- src/components/ — TopNav, MobileCallBar, Footer, Hero, Marquee, PhotoGrid, ReviewCard, Stats, ServiceCard
+- src/layouts/BaseLayout.astro — head, JSON-LD, fonts, scroll-reveal script, sticky-nav script, Plausible analytics
+- src/pages/ — index, services, about, contact, reviews
+- src/styles/global.css — Tailwind + design tokens
+- src/data/business.ts — business data (name, phone, address, hours, services, reviews)
+- public/photos/ — real photos from the bundle

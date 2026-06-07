@@ -1,0 +1,19 @@
+---
+interface Props {
+  name: string;
+  description: string;
+  image?: string;
+}
+
+const { name, description, image } = Astro.props;
+---
+
+<div class="bg-[var(--bg-elevated)] rounded-2xl border border-[var(--border)] overflow-hidden scroll-reveal">
+  {image && (
+    <img src={image} alt={name} class="w-full h-48 object-cover" loading="lazy" />
+  )}
+  <div class="p-6">
+    <h3 class="font-['Instrument_Serif',serif] text-xl text-[var(--ink)] mb-2">{name}</h3>
+    <p class="text-sm text-[var(--ink-2)] leading-relaxed">{description}</p>
+  </div>
+</div>

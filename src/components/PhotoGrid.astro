@@ -1,0 +1,21 @@
+---
+const { business } = await import('../data/business.ts');
+const photos = business.photos.gallery;
+---
+
+<section class="section-padding">
+  <div class="container-main">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {photos.map((src, i) => (
+        <div class:list={["overflow-hidden rounded-lg scroll-reveal", i === 0 && "col-span-2 row-span-2"]}>
+          <img
+            src={src}
+            alt={`${business.name} photo ${i + 1}`}
+            class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+            loading="lazy"
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

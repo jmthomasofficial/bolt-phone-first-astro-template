@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TopNav from '../components/TopNav.astro';
+import Hero from '../components/Hero.astro';
+import ReviewCard from '../components/ReviewCard.astro';
+import Footer from '../components/Footer.astro';
+import MobileCallBar from '../components/MobileCallBar.astro';
+import { business } from '../data/business.ts';
+---
+
+<BaseLayout title="Reviews" page="reviews">
+  <TopNav slot="topnav" />
+
+  <Hero
+    heading="Reviews"
+    subhead={`${business.aggregateRating.ratingValue} stars from ${business.aggregateRating.reviewCount} reviews.`}
+    showCta={false}
+    height="min-h-[40vh]"
+  />
+
+  <!-- Aggregate Rating Schema -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': business.category || 'LocalBusiness',
+    name: business.name,
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: business.aggregateRating.ratingValue,
+      reviewCount: business.aggregateRating.reviewCount,
+    },
+  })} />
+
+  <section class="section-padding">
+    <div class="container-main">
+      <!-- Featured review -->
+      {business.reviews[0] && (
+        <div class="mb-12">
+          <ReviewCard
+            name={business.reviews[0].name}
+            city={business.reviews[0].city}
+            rating={business.reviews[0].rating}
+            text={business.reviews[0].text}
+            featured={true}
+          />
+        </div>
+      )}
+
+      <!-- Review grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {business.reviews.slice(1).map((review) => (
+          <ReviewCard
+            name={review.name}
+            city={review.city}
+            rating={review.rating}
+            text={review.text}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-20 bg-[var(--accent)]">
+    <div class="container-main text-center">
+      <h2 class="font-['Instrument_Serif',serif] italic text-[clamp(1.75rem,3.5vw,2.75rem)] text-white mb-6 scroll-reveal">
+        Join our happy customers.
+      </h2>
+      <a href={`tel:${business.phone}`} class="btn-primary bg-white text-[var(--accent)] text-lg scroll-reveal">
+        Call {business.phone}
+      </a>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+  <MobileCallBar slot="mobile-call-bar" />
+</BaseLayout>

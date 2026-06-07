@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TopNav from '../components/TopNav.astro';
+import Hero from '../components/Hero.astro';
+import Stats from '../components/Stats.astro';
+import PhotoGrid from '../components/PhotoGrid.astro';
+import Footer from '../components/Footer.astro';
+import MobileCallBar from '../components/MobileCallBar.astro';
+import { business } from '../data/business.ts';
+---
+
+<BaseLayout title="About" page="about">
+  <TopNav slot="topnav" />
+
+  <Hero
+    heading={`About ${business.name}`}
+    subhead={`Serving ${business.address.city} since ${business.established}.`}
+    showCta={false}
+    height="min-h-[50vh]"
+  />
+
+  <!-- Story -->
+  <section class="section-padding">
+    <div class="container-main">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <div class="scroll-reveal">
+          <h2 class="font-['Instrument_Serif',serif] italic text-[clamp(1.75rem,3.5vw,2.75rem)] text-[var(--ink)] mb-6">
+            Our story
+          </h2>
+          <div class="space-y-4 text-[var(--ink-2)] leading-relaxed">
+            <p>{business.description}</p>
+            <p>We've been serving {business.address.city} and the surrounding area for over {business.stats[0]?.number || '27 years'}. Every job is a neighbor — not a number.</p>
+            <p>We show up on time, do the work right, and stand behind it. That's why {business.reviews[0]?.name || 'our customers'} recommend us.</p>
+          </div>
+        </div>
+        <div class="scroll-reveal">
+          <img src={business.photos.gallery[0] || business.photos.cover} alt={business.name} class="rounded-2xl w-full object-cover aspect-[4/3]" loading="lazy" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Stats />
+
+  <PhotoGrid />
+
+  <!-- CTA -->
+  <section class="py-20 bg-[var(--accent)]">
+    <div class="container-main text-center">
+      <h2 class="font-['Instrument_Serif',serif] italic text-[clamp(1.75rem,3.5vw,2.75rem)] text-white mb-6 scroll-reveal">
+        Let's talk.
+      </h2>
+      <a href={`tel:${business.phone}`} class="btn-primary bg-white text-[var(--accent)] text-lg scroll-reveal">
+        Call {business.phone}
+      </a>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+  <MobileCallBar slot="mobile-call-bar" />
+</BaseLayout>
