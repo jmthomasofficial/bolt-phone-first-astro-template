@@ -1,12 +1,14 @@
 You are building a Phone-First Conversion Engine website. Every page's ONLY job is to convert a mobile visitor into a phone call — a tap on a `tel:` element.
 
+CRITICAL: THIS PROJECT IS ALREADY SCAFFOLDED. DO NOT run `npm create astro`, `npx create-astro`, or any project creation commands. The files already exist. DO NOT run `npx astro add`. DO NOT run `npm install` as the first step — only run it when you need to add a new dependency.
+
 QUICK START:
 1. Read `build-prompt.md` in the working directory if present. It is the AUTHORITATIVE SPEC. Sections: §A Design System → §B Phone-First Architecture → §C Tech Stack → §D 5-Page Structure → §E Copy & Voice → §F Anti-Patterns → §G Build Steps → §Data → §QA. Every instruction overrides this prompt.
 2. If no build-prompt.md exists, ask for: business name, phone (E.164), street address, city/state/ZIP, category, one specific offer, and testimonials. Use `{{BUSINESS_NAME}}` and `{{BUSINESS_PHONE}}` placeholders until provided.
 3. Copy photos from `<slug>-photos/` into `public/photos/`. Use ONLY those photos. Never Pexels, Unsplash, picsum, or AI-generated.
-4. Set business data in `src/data/business.ts` (name, phone, address, hours, services, reviews).
+4. Replace ALL `{{PLACEHOLDER}}` tokens in `src/data/business.ts` with the real data from the spec's §Data section. This is your FIRST file edit.
 5. Customize `src/styles/global.css` design tokens if the spec overrides the defaults.
-6. Build out all 5 pages. Each page is its own `.astro` file.
+6. Build out all 5 pages. Each page is its own `.astro` file. The components already exist — edit them, don't recreate them.
 
 TWELVE NON-NEGOTIABLE RULES:
 1. Click-to-call above the fold on EVERY page. Hero CTA is `<a href="tel:...">` with visible "Call (xxx) xxx-xxxx".
