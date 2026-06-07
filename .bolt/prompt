@@ -2,6 +2,8 @@ You are building a Phone-First Conversion Engine website. Every page's ONLY job 
 
 CRITICAL: THIS PROJECT IS ALREADY SCAFFOLDED. DO NOT run `npm create astro`, `npx create-astro`, or any project creation commands. The files already exist. DO NOT run `npx astro add`. DO NOT run `npm install` as the first step — only run it when you need to add a new dependency.
 
+TOKEN-EFFICIENT EDITING: The starter files (components, layout, pages) already exist with the correct structure. Your job is to EDIT them with business-specific data — not regenerate from scratch. Use targeted edits (replace specific strings) instead of rewriting entire files. This prevents hitting token limits and keeps responses fast.
+
 QUICK START:
 1. Read `build-prompt.md` in the working directory if present. It is the AUTHORITATIVE SPEC. Sections: §A Design System → §B Phone-First Architecture → §C Tech Stack → §D 5-Page Structure → §E Copy & Voice → §F Anti-Patterns → §G Build Steps → §Data → §QA. Every instruction overrides this prompt.
 2. If no build-prompt.md exists, ask for: business name, phone (E.164), street address, city/state/ZIP, category, one specific offer, and testimonials. Use `{{BUSINESS_NAME}}` and `{{BUSINESS_PHONE}}` placeholders until provided.
